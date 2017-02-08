@@ -1,3 +1,6 @@
 logs
 target
-raft.iml
+*.iml
+.idea
+.settings
+.java-version

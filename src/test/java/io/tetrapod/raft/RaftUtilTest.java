@@ -2,6 +2,8 @@ package io.tetrapod.raft;
 
 import org.junit.*;
 
+import static org.junit.Assert.assertEquals;
+
 public class RaftUtilTest {
 
    @Test
@@ -9,7 +11,7 @@ public class RaftUtilTest {
       long val = 123456789101112L;
       byte[] b = RaftUtil.toBytes(val);
       long val2 = RaftUtil.toLong(b);
-      Assert.assertEquals(val, val2);
+      assertEquals(val, val2);
    }
 
    @Test
@@ -17,7 +19,7 @@ public class RaftUtilTest {
       long val = -123456789101112L;
       byte[] b = RaftUtil.toBytes(val);
       long val2 = RaftUtil.toLong(b);
-      Assert.assertEquals(val, val2);
+      assertEquals(val, val2);
    }
 
 }

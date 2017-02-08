@@ -1,13 +1,16 @@
 package io.tetrapod.raft;
 
-import java.io.*;
-import java.nio.channels.FileLock;
-import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.*;
+import java.nio.channels.FileLock;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * A raft log is the backbone of the raft algorithm. It stores an ordered list of commands that have been agreed upon by consensus, as well
@@ -74,7 +77,12 @@ public class Log<T extends StateMachine<T>> {
       updateStateMachine();
 
       // fire up our thread for writing log files 
-      final Thread t = new Thread(() -> writeLoop(), "Raft Log Writer");
+      final Thread t = new Thread(new Runnable() {
+         @Override
+         public void run() {
+            writeLoop();
+         }
+      }, "Raft Log Writer");
       t.start();
    }
 
@@ -294,6 +302,9 @@ public class Log<T extends StateMachine<T>> {
          if (out != null) {
             out.close();
             out = null;
+         }
+         if (lock != null) {
+            lock.release();
          }
          logger.info("commitIndex = {}, lastIndex = {}", commitIndex, lastIndex);
       } catch (Throwable t) {

@@ -1,10 +1,13 @@
 package io.tetrapod.raft.storage;
 
-import java.io.*;
-import java.util.Arrays;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.Arrays;
 
 /**
  * A wrapper for a document in the Storage database

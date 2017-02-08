@@ -1,10 +1,12 @@
 package io.tetrapod.raft;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.*;
 import java.util.*;
-import java.util.zip.*;
-
-import org.slf4j.*;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 
 /**
  * The state machine applies commands to update state.
@@ -94,10 +96,30 @@ public abstract class StateMachine<T extends StateMachine<T>> {
    }
 
    public StateMachine() {
-      registerCommand(COMMAND_ID_ADD_PEER, () -> new AddPeerCommand<T>());
-      registerCommand(COMMAND_ID_DEL_PEER, () -> new DelPeerCommand<T>());
-      registerCommand(COMMAND_ID_NEW_TERM, () -> new NewTermCommand<T>());
-      registerCommand(COMMAND_ID_HEALTH_CHECK, () -> new HealthCheckCommand<T>());
+      registerCommand(COMMAND_ID_ADD_PEER, new CommandFactory<T>() {
+         @Override
+         public Command<T> makeCommand() {
+            return new AddPeerCommand<>();
+         }
+      });
+      registerCommand(COMMAND_ID_DEL_PEER, new CommandFactory<T>() {
+         @Override
+         public Command<T> makeCommand() {
+            return new DelPeerCommand<>();
+         }
+      });
+      registerCommand(COMMAND_ID_NEW_TERM, new CommandFactory<T>() {
+         @Override
+         public Command<T> makeCommand() {
+            return new NewTermCommand<>();
+         }
+      });
+      registerCommand(COMMAND_ID_HEALTH_CHECK, new CommandFactory<T>() {
+         @Override
+         public Command<T> makeCommand() {
+            return new HealthCheckCommand<>();
+         }
+      });
    }
 
    public SnapshotMode getSnapshotMode() {

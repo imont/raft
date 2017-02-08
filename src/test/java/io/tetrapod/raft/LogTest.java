@@ -1,10 +1,15 @@
 package io.tetrapod.raft;
 
-import java.io.*;
-import java.nio.file.Files;
+import org.junit.AfterClass;
+import org.junit.Assert;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import org.junit.*;
-import org.slf4j.*;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 
 /**
  * Unit tests for the raft Log class
